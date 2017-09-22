@@ -1,7 +1,7 @@
 package io.github.rfonzi.rxaware_sample
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -30,21 +30,19 @@ class MainActivity : BaseActivity() {
         win1 = findViewById(R.id.win1)
         win2 = findViewById(R.id.win2)
 
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        val dimens = Observable.fromCallable { metrics.widthPixels to metrics.heightPixels }
 
         vm.exposePuck(puck.clicks())
-        vm.exposeDimens(dimens)
+        vm.exposeDimens(getDimens())
 
         vm.coordinates()
                 .subscribe {
-                    puck.x = it.first.toFloat() - (puck.width / 2)
-                    puck.y = it.second.toFloat() - (puck.height / 2)
+                    puck.x = it.first.toFloat() - (puck.width.div(2))
+                    puck.y = it.second.toFloat() - (puck.height.div(2))
                 }
                 .lifecycleAware()
 
         vm.winSignal()
+                .filter { it }
                 .subscribe {
                     puck.visibility = View.GONE
                     score.setTextColor(Color.BLACK)
@@ -58,6 +56,18 @@ class MainActivity : BaseActivity() {
                     score.text = it.toString()
                 }
                 .lifecycleAware()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        vm.exposeDimens(getDimens())
+
+    }
+
+    fun getDimens(): Observable<Pair<Int, Int>>{
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+        return Observable.fromCallable { metrics.widthPixels to metrics.heightPixels }
     }
 
 

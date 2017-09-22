@@ -13,9 +13,9 @@ class MainViewModel : BaseViewModel() {
 
     private val game = PuckGameManager()
 
-    private val coordinates: BehaviorSubject<Pair<Int, Int>> = BehaviorSubject.create()
-    private val scoreObservable: BehaviorSubject<Int> = BehaviorSubject.create()
-    private val win: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val coordinates: BehaviorSubject<Pair<Int, Int>> = BehaviorSubject.createDefault(0 to 0)
+    private val scoreObservable: BehaviorSubject<Int> = BehaviorSubject.createDefault(0)
+    private val win: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
 
     fun coordinates(): Observable<Pair<Int, Int>> = coordinates
     fun winSignal(): Observable<Boolean> = win
@@ -38,6 +38,7 @@ class MainViewModel : BaseViewModel() {
     fun exposeDimens(dimens: Observable<Pair<Int, Int>>) = dimens
             .subscribe {
                 game.updateGameDimens(it)
+                coordinates.onNext(game.updateCoords(coordinates.value))
             }
             .lifecycleAware()
 

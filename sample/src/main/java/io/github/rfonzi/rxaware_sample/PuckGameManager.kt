@@ -9,6 +9,8 @@ class PuckGameManager {
 
     var score = 0
     val maxScore = 50
+    var prevHeight = 0
+    var prevWidth = 0
     var height = 0
     var width = 0
     var win = false
@@ -25,21 +27,28 @@ class PuckGameManager {
     }
 
     fun nextCoords(): Pair<Int, Int> {
-        var x = random.nextInt(width)
-        var y = random.nextInt(height)
+        val x: Int = random.nextInt(width)
+        var y: Float = random.nextInt(height).toFloat().div(height)
 
-        if (height > width)
-            y /= 2
-        else
-            x /= 2
+        y /= 2
 
-        if (!onTop)
-            y += height.div(2)
+        if (!onTop){
+            y += .5f
+        }
 
-        return x to y
+        return x to Math.round(y * height)
+    }
+
+    fun updateCoords(coords: Pair<Int, Int>): Pair<Int, Int>{
+        val x = coords.first.toFloat().div(prevWidth)
+        var y = coords.second.toFloat().div(prevHeight)
+
+        return Math.round(x * width) to Math.round(y * height)
     }
 
     fun updateGameDimens(xy: Pair<Int, Int>) {
+        prevWidth = width
+        prevHeight = height
         width = xy.first
         height = xy.second
     }
