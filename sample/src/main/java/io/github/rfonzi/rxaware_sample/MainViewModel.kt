@@ -11,15 +11,8 @@ import java.util.*
 
 class MainViewModel : BaseViewModel() {
 
-    private val random = Random(Calendar.DATE.toLong())
-    private var onTop = true
-
-    private var score = 0
-    private val maxScore: Long = 50
-    private var height = 0
-    private var width = 0
-
-
+    private val game = PuckGameManager()
+    
     private val coordinates: BehaviorSubject<Pair<Int, Int>> = BehaviorSubject.create()
     private val scoreObservable: BehaviorSubject<Int> = BehaviorSubject.create()
     private val win: BehaviorSubject<Boolean> = BehaviorSubject.create()
@@ -29,41 +22,22 @@ class MainViewModel : BaseViewModel() {
     fun getScore(): Observable<Int> = scoreObservable
 
 
-
     fun exposePuck(clicks: Observable<Unit>) = clicks
             .subscribe {
-                coordinates.onNext(nextCoords())
-                onTop = !onTop
+                coordinates.onNext(game.nextCoords())
+                scoreObservable.onNext(game.score)
 
-                score++
-                if (score >= maxScore)
+                if(game.win){
                     win.onNext(true)
-
-                scoreObservable.onNext(score)
+                    toast("Winner Winner Chicken Dinner")
+                }
             }
             .lifecycleAware()
 
     fun exposeDimens(dimens: Observable<Pair<Int, Int>>) = dimens
             .subscribe {
-                width = it.first
-                height = it.second
+                game.updateGameDimens(it)
             }
             .lifecycleAware()
-
-
-    private fun nextCoords(): Pair<Int, Int> {
-        var x = random.nextInt(width)
-        var y = random.nextInt(height)
-
-        if (height > width)
-            y /= 2
-        else
-            x /= 2
-
-        if(!onTop)
-            y += height.div(2)
-
-        return x to y
-    }
 
 }
