@@ -1,6 +1,8 @@
 package io.github.rfonzi.rxaware_sample
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
@@ -15,6 +17,8 @@ class MainActivity : BaseActivity() {
     lateinit var vm: MainViewModel
     lateinit var puck: ImageButton
     lateinit var score: TextView
+    lateinit var win1: TextView
+    lateinit var win2: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,8 @@ class MainActivity : BaseActivity() {
 
         puck = findViewById(R.id.puck)
         score = findViewById(R.id.score)
+        win1 = findViewById(R.id.win1)
+        win2 = findViewById(R.id.win2)
 
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
@@ -41,6 +47,9 @@ class MainActivity : BaseActivity() {
         vm.winSignal()
                 .subscribe {
                     puck.visibility = View.GONE
+                    score.setTextColor(Color.BLACK)
+                    win1.visibility = View.VISIBLE
+                    win2.visibility = View.VISIBLE
                 }
                 .lifecycleAware()
 

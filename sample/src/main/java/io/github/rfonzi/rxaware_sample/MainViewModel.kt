@@ -15,7 +15,7 @@ class MainViewModel : BaseViewModel() {
     private var onTop = true
 
     private var score = 0
-    private val maxScore: Long = 1000
+    private val maxScore: Long = 50
     private var height = 0
     private var width = 0
 
