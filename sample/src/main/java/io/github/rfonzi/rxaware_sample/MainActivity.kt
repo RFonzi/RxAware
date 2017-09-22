@@ -32,8 +32,8 @@ class MainActivity : BaseActivity() {
 
         vm.coordinates()
                 .subscribe {
-                    puck.x = it.first.toFloat()
-                    puck.y = it.second.toFloat()
+                    puck.x = it.first.toFloat() - (puck.width / 2)
+                    puck.y = it.second.toFloat() - (puck.height / 2)
                 }
                 .lifecycleAware()
 
