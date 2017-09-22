@@ -14,17 +14,19 @@ class MainViewModel : BaseViewModel() {
     private val random = Random(Calendar.DATE.toLong())
     private var onTop = true
 
-    var score = 0
-    val maxScore: Long = 1000
+    private var score = 0
+    private val maxScore: Long = 1000
     private var height = 0
     private var width = 0
 
 
     private val coordinates: BehaviorSubject<Pair<Int, Int>> = BehaviorSubject.create()
+    private val scoreObservable: BehaviorSubject<Int> = BehaviorSubject.create()
     private val win: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     fun coordinates(): Observable<Pair<Int, Int>> = coordinates
     fun winSignal(): Observable<Boolean> = win
+    fun getScore(): Observable<Int> = scoreObservable
 
 
 
@@ -32,6 +34,12 @@ class MainViewModel : BaseViewModel() {
             .subscribe {
                 coordinates.onNext(nextCoords())
                 onTop = !onTop
+
+                score++
+                if (score >= maxScore)
+                    win.onNext(true)
+
+                scoreObservable.onNext(score)
             }
             .lifecycleAware()
 
@@ -39,11 +47,9 @@ class MainViewModel : BaseViewModel() {
             .subscribe {
                 width = it.first
                 height = it.second
-                score++
-                if (score >= maxScore)
-                    win.onNext(true)
             }
             .lifecycleAware()
+
 
     private fun nextCoords(): Pair<Int, Int> {
         var x = random.nextInt(width)
