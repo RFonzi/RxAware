@@ -12,7 +12,7 @@ import java.util.*
 class MainViewModel : BaseViewModel() {
 
     private val game = PuckGameManager()
-    
+
     private val coordinates: BehaviorSubject<Pair<Int, Int>> = BehaviorSubject.create()
     private val scoreObservable: BehaviorSubject<Int> = BehaviorSubject.create()
     private val win: BehaviorSubject<Boolean> = BehaviorSubject.create()
@@ -24,6 +24,7 @@ class MainViewModel : BaseViewModel() {
 
     fun exposePuck(clicks: Observable<Unit>) = clicks
             .subscribe {
+                game.incrementScore()
                 coordinates.onNext(game.nextCoords())
                 scoreObservable.onNext(game.score)
 
