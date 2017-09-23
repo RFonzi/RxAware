@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion 26
@@ -26,10 +25,6 @@ android {
 
 }
 
-sourceSets {
-    main.java.srcDirs += 'src/main/java'
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -49,19 +44,4 @@ repositories {
     mavenCentral()
 }
 
-task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = 'javadoc'
-    outputDirectory = "$buildDir/javadoc"
-    inputs.dir 'src/main/java'
-}
-
-task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
-    classifier = 'javadoc'
-    from "$buildDir/javadoc"
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.java.srcDirs
-}
 
