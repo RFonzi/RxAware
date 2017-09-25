@@ -2,6 +2,7 @@ package io.github.rfonzi.rxaware
 
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.FragmentTransaction
+import android.support.v7.app.AppCompatActivity
 import io.github.rfonzi.rxaware.bus.UIBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -19,5 +20,7 @@ abstract class BaseViewModel : ViewModel() {
     fun navigateUp() = UIBus.navigateUp()
 
     fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) = UIBus.fragmentTransaction(operations)
+
+    fun startActivity(target: Class<out AppCompatActivity>) = UIBus.startActivity(target)
 
 }

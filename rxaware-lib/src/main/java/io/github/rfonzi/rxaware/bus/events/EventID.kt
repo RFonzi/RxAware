@@ -6,5 +6,6 @@ package io.github.rfonzi.rxaware.bus.events
 enum class EventID {
     TOAST,
     NAVIGATE_UP,
-    FRAGMENT_TRANSACTION
+    FRAGMENT_TRANSACTION,
+    START_ACTIVITY
 }

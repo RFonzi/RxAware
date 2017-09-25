@@ -1,6 +1,5 @@
 package io.github.rfonzi.rxaware
 
-import android.support.test.runner.AndroidJUnit4
 import io.github.rfonzi.rxaware.bus.UIBus
 import io.github.rfonzi.rxaware.bus.events.Event
 import io.github.rfonzi.rxaware.bus.events.NavigateUpEvent
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith
  * Created by ryan on 9/22/17.
  */
 
-@RunWith(AndroidJUnit4::class)
 class UIBusTest {
 
     @Test
