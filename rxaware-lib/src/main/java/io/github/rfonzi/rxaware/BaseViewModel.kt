@@ -25,6 +25,9 @@ abstract class BaseViewModel : ViewModel() {
 
     fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) = UIBus.startActivityAndStore(target, data)
 
+    fun store(data: Any) = UIBus.store(data)
+
+
     fun receive(): Any = UIBus.receive()
 
 }
