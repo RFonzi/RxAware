@@ -9,10 +9,10 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.clicks
-import io.github.rfonzi.rxaware.BaseActivity
+import io.github.rfonzi.rxaware.RxAwareActivity
 import io.reactivex.Observable
 
-class MainActivity : BaseActivity() {
+class MainActivity : RxAwareActivity() {
 
     lateinit var vm: MainViewModel
     lateinit var puck: ImageButton

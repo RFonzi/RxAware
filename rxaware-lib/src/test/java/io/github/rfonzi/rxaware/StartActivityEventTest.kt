@@ -3,17 +3,12 @@ package io.github.rfonzi.rxaware
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.FrameLayout
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.Assert.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows
-import org.robolectric.shadow.api.Shadow
-import org.robolectric.shadows.ShadowActivity
 import org.robolectric.shadows.ShadowApplication
 
 /**
@@ -63,7 +58,7 @@ class StartActivityEventTest {
         assertEquals(expected.component, actual.component)
     }
 
-    class TestActivity : BaseActivity(){
+    class TestActivity : RxAwareActivity(){
         lateinit var vm: TestViewModel
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +67,7 @@ class StartActivityEventTest {
             vm = ViewModelProviders.of(this).get(TestViewModel::class.java)
         }
     }
-    class TargetActivity : BaseActivity()
-    class TestFragment : BaseFragment()
-    class TestViewModel : BaseViewModel()
+    class TargetActivity : RxAwareActivity()
+    class TestFragment : RxAwareFragment()
+    class TestViewModel : RxAwareViewModel()
 }

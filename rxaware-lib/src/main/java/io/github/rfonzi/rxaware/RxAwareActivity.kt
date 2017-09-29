@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by ryan on 9/21/17.
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class RxAwareActivity : AppCompatActivity() {
     private val disposables = CompositeDisposable()
 
     override fun onStart() {

@@ -1,15 +1,14 @@
 package io.github.rfonzi.rxaware_sample
 
-import io.github.rfonzi.rxaware.BaseViewModel
+import io.github.rfonzi.rxaware.RxAwareViewModel
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import java.util.*
 
 /**
  * Created by ryan on 9/22/17.
  */
 
-class MainViewModel : BaseViewModel() {
+class MainViewModel : RxAwareViewModel() {
 
     private val game = PuckGameManager()
 

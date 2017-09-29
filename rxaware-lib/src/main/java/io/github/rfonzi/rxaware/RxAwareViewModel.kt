@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by ryan on 9/22/17.
  */
-abstract class BaseViewModel : ViewModel() {
+abstract class RxAwareViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
 
     fun Disposable.lifecycleAware() = disposables.add(this)

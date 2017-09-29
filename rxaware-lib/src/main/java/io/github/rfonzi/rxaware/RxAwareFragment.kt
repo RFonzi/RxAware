@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by ryan on 9/20/17.
  */
-abstract class BaseFragment : Fragment() {
+abstract class RxAwareFragment : Fragment() {
 
     private val disposables = CompositeDisposable()
 
