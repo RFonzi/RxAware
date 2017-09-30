@@ -23,7 +23,7 @@ abstract class RxAwareActivity : AppCompatActivity() {
         super.onStart()
         UIBus.toObservable()
                 .subscribe {
-                    when(it.id){
+                    when (it.id) {
                         EventID.TOAST -> toast((it as ToastEvent).message)
                         EventID.NAVIGATE_UP -> navigateUp()
                         EventID.FRAGMENT_TRANSACTION -> fragmentTransaction((it as FragmentTransactionEvent).event)
@@ -37,7 +37,11 @@ abstract class RxAwareActivity : AppCompatActivity() {
 
     fun toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-    fun navigateUp() = NavUtils.navigateUpFromSameTask(this)
+    fun navigateUp() =
+            if (supportFragmentManager.backStackEntryCount > 0)
+                supportFragmentManager.popBackStack()
+            else
+                NavUtils.navigateUpFromSameTask(this)
 
     fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()

@@ -27,7 +27,6 @@ abstract class RxAwareViewModel : ViewModel() {
 
     fun store(data: Any) = UIBus.store(data)
 
-
     fun receive(): Any = UIBus.receive()
 
 }
