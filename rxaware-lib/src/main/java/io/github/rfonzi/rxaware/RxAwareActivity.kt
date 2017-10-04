@@ -16,7 +16,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by ryan on 9/21/17.
  */
-abstract class RxAwareActivity : AppCompatActivity() {
+abstract class RxAwareActivity : AppCompatActivity(), RxAwareControls {
     private val disposables = CompositeDisposable()
 
     override fun onStart() {
@@ -35,27 +35,27 @@ abstract class RxAwareActivity : AppCompatActivity() {
 
     fun Disposable.lifecycleAware() = disposables.add(this)
 
-    fun toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    override fun toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-    fun navigateUp() =
+    override fun navigateUp() =
             if (supportFragmentManager.backStackEntryCount > 0)
                 supportFragmentManager.popBackStack()
             else
                 NavUtils.navigateUpFromSameTask(this)
 
-    fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) {
+    override fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.operations()
         fragmentTransaction.commit()
     }
 
-    fun startActivity(target: Class<out AppCompatActivity>) = startActivity(Intent(this, target))
+    override fun startActivity(target: Class<out AppCompatActivity>) = startActivity(Intent(this, target))
 
-    fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) = UIBus.startActivityAndStore(target, data)
+    override fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) = UIBus.startActivityAndStore(target, data)
 
-    fun store(data: Any) = UIBus.store(data)
+    override fun store(data: Any) = UIBus.store(data)
 
-    fun receive(): Any = UIBus.receive()
+    override fun receive(): Any = UIBus.receive()
 
     override fun onStop() {
         super.onStop()
