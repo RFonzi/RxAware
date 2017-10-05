@@ -30,6 +30,8 @@ abstract class RxAwareFragment : Fragment(), RxAwareControls {
 
     override fun receive(): Any = UIBus.receive()
 
+    fun <T : Any> postToCurrentActivity(data: T) = UIBus.postToCurrentActivity(data)
+
     override fun onStop() {
         super.onStop()
         disposables.clear()

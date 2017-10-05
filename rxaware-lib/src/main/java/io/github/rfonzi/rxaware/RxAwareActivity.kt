@@ -5,11 +5,10 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.jakewharton.rxrelay2.BehaviorRelay
 import io.github.rfonzi.rxaware.bus.UIBus
-import io.github.rfonzi.rxaware.bus.events.EventID
-import io.github.rfonzi.rxaware.bus.events.FragmentTransactionEvent
-import io.github.rfonzi.rxaware.bus.events.StartActivityEvent
-import io.github.rfonzi.rxaware.bus.events.ToastEvent
+import io.github.rfonzi.rxaware.bus.events.*
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -18,6 +17,7 @@ import io.reactivex.disposables.Disposable
  */
 abstract class RxAwareActivity : AppCompatActivity(), RxAwareControls {
     private val disposables = CompositeDisposable()
+    private val posts: BehaviorRelay<Any> = BehaviorRelay.create()
 
     override fun onStart() {
         super.onStart()
@@ -28,6 +28,7 @@ abstract class RxAwareActivity : AppCompatActivity(), RxAwareControls {
                         EventID.NAVIGATE_UP -> navigateUp()
                         EventID.FRAGMENT_TRANSACTION -> fragmentTransaction((it as FragmentTransactionEvent).event)
                         EventID.START_ACTIVITY -> startActivity((it as StartActivityEvent).activity)
+                        EventID.POST_TO_CURRENT_ACTIVITY -> posts.accept((it as PostToCurrentActivityEvent).post)
                     }
                 }.lifecycleAware()
     }
@@ -56,6 +57,10 @@ abstract class RxAwareActivity : AppCompatActivity(), RxAwareControls {
     override fun store(data: Any) = UIBus.store(data)
 
     override fun receive(): Any = UIBus.receive()
+
+    inline fun <reified T : Any> onPost(): Observable<T> = getPostsAsObservable().ofType(T::class.java)
+
+    fun getPostsAsObservable(): Observable<Any> = posts
 
     override fun onStop() {
         super.onStop()
