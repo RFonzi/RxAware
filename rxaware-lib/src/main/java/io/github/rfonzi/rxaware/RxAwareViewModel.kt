@@ -10,23 +10,25 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by ryan on 9/22/17.
  */
-abstract class RxAwareViewModel : ViewModel() {
+abstract class RxAwareViewModel : ViewModel(), RxAwareControls {
     private val disposables = CompositeDisposable()
 
     fun Disposable.lifecycleAware() = disposables.add(this)
 
-    fun toast(message: String) = UIBus.toast(message)
+    override fun toast(message: String) = UIBus.toast(message)
 
-    fun navigateUp() = UIBus.navigateUp()
+    override fun navigateUp() = UIBus.navigateUp()
 
-    fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) = UIBus.fragmentTransaction(operations)
+    override fun fragmentTransaction(operations: FragmentTransaction.() -> Unit) = UIBus.fragmentTransaction(operations)
 
-    fun startActivity(target: Class<out AppCompatActivity>) = UIBus.startActivity(target)
+    override fun startActivity(target: Class<out AppCompatActivity>) = UIBus.startActivity(target)
 
-    fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) = UIBus.startActivityAndStore(target, data)
+    override fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) = UIBus.startActivityAndStore(target, data)
 
-    fun store(data: Any) = UIBus.store(data)
+    override fun store(data: Any) = UIBus.store(data)
 
-    fun receive(): Any = UIBus.receive()
+    override fun receive(): Any = UIBus.receive()
+
+    fun <T : Any> postToCurrentActivity(data: T) = UIBus.postToCurrentActivity(data)
 
 }

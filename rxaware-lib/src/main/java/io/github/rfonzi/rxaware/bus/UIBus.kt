@@ -14,13 +14,13 @@ object UIBus {
     private var data: Any? = null
     private val subject: PublishRelay<Event> = PublishRelay.create()
 
-    fun toast(message: String) = post(ToastEvent(message))
+    fun toast(message: String) = postEvent(ToastEvent(message))
 
-    fun navigateUp() = post(NavigateUpEvent())
+    fun navigateUp() = postEvent(NavigateUpEvent())
 
-    fun fragmentTransaction(transaction: FragmentTransaction.() -> Unit) = post(FragmentTransactionEvent(transaction))
+    fun fragmentTransaction(transaction: FragmentTransaction.() -> Unit) = postEvent(FragmentTransactionEvent(transaction))
 
-    fun startActivity(target: Class<out AppCompatActivity>) = post(StartActivityEvent(target))
+    fun startActivity(target: Class<out AppCompatActivity>) = postEvent(StartActivityEvent(target))
 
     fun startActivityAndStore(target: Class<out AppCompatActivity>, data: Any) {
         startActivity(target)
@@ -37,6 +37,8 @@ object UIBus {
 
     fun toObservable(): Observable<Event> = subject
 
-    private fun post(event: Event) = subject.accept(event)
+    private fun postEvent(event: Event) = subject.accept(event)
+
+    fun postToCurrentActivity(callbacks: Any): Any? = postEvent(PostToCurrentActivityEvent(callbacks))
 }
 
